@@ -14,14 +14,12 @@
             "type": "vcs",
             "url": "https://github.com/iignatov/LightOpenID"
         }
-    ],      
+    ],
     "require": {	
         "php": ">=5.4.0",
         "iignatov/lightopenid": "*"
     },
     "autoload": {
-        "psr-0": {
-            "Gabyfle": "src/"
-        }
+        "classmap": ["src/gSteamAuth.php"]
     }
 }
