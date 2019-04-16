@@ -10,20 +10,20 @@
 namespace Gabyfle;
 
 /**
- * Class gSteamAuthException
+ * Class SteamAuthException
  * @package Gabyfle
  */
-class gSteamAuthException extends \Exception
+class SteamAuthException extends \Exception
 {
 
 }
 
 /**
- * Class gSteamAuth
+ * Class SteamAuth
  * @package Gabyfle
  * @param $domainUrl string Your domain url
  */
-class gSteamAuth
+class SteamAuth
 {
     /**
      * @var \LightOpenID
