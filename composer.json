@@ -20,6 +20,10 @@
         "iignatov/lightopenid": "*"
     },
     "autoload": {
-        "classmap": ["src/gSteamAuth.php"]
-    }
+        "psr-0": {
+            "Gabyfle": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

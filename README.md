@@ -4,14 +4,14 @@ A simple, object-oriented Steam authentication PHP script to make your life easi
 ## Installation
 
 ### Installing via `composer`
-- Package name : `Gabyfle/gSteam-Auth`
+- Package name : `gabyfle/gsteam-auth`
 - Require :
     - PHP : **>=5.4.0**
     - [iignatov/lightopenid](https://github.com/iignatov/LightOpenID)
 
 Command line : 
 ```
-composer require Gabyfle/gSteam-Auth
+composer require gabyfle/gsteam-auth
 ```
 ### Installing without `composer`
 - Download the lastest release : here
@@ -24,7 +24,7 @@ composer require Gabyfle/gSteam-Auth
 ### Connecting an user
 ```php
 use Gabyfle;
-$connect = new gSteamAuth('localhost', 'XXXXXX');
+$connect = new SteamAuth('localhost', 'XXXXXX');
 /* Redirecting user to Steam's login servers */
 $connect->__open();
 /* Checking if everything is okay with Steam */
@@ -43,12 +43,14 @@ $steamId = $connect->getUserData('steamid');
 You can connecting an user and directly get his data by 'snaking' gSteam's methods like this :
 ```php
 use Gabyfle;
-$connect = new gSteamAuth('localhost', 'XXXXXX');
+$connect = new SteamAuth('localhost', 'XXXXXX');
 $userData = $connect->__open()->_check()->getUserData();
 ```
 #### Lightweight
 **gSteam-Auth size** : 7577 bytes
+
 **LightOpenID size** : 43611 bytes
+
 **Total size** : 51188 bytes
 
 #### Documented
