@@ -1,5 +1,5 @@
 {
-    "name": "Gabyfle/gSteam-Auth",
+    "name": "gabyfle/gsteam-auth",
     "description": "An object-oriented Steam authentication PHP script",
     "keywords": ["Gabyfle", "Steam", "authenticate", "object-oriented"],
     "license": "Apache-2.0",
