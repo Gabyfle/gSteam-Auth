@@ -23,18 +23,19 @@ composer require gabyfle/gsteam-auth
 
 ### Connecting an user
 ```php
+/* Do not forget to start the session before using SteamAuth's methods */
 use Gabyfle;
 $connect = new SteamAuth('localhost', 'XXXXXX');
 /* Redirecting user to Steam's login servers */
 $connect->__open();
 /* Checking if everything is okay with Steam */
-$connect->__check();
+$isConnected = $connect->__check();
 ```
 ### Getting user's data
 ```php
-/* Getting the whole data as an associative table */
-$userData = $connect->getUserData();
-/* Getting only one information */
+/* Getting user data into a $_SESSION var */
+$connect->getDataFromSteam();
+/* Accessing to this data */
 $steamId = $connect->getUserData('steamid');
 ```
 
@@ -44,7 +45,7 @@ You can connecting an user and directly get his data by 'snaking' gSteam's metho
 ```php
 use Gabyfle;
 $connect = new SteamAuth('localhost', 'XXXXXX');
-$userData = $connect->__open()->_check()->getUserData();
+$isConnected = $connect->__open()->__check();
 ```
 #### Lightweight
 **gSteam-Auth size** : 7577 bytes

@@ -10,15 +10,6 @@
 namespace Gabyfle;
 
 /**
- * Class SteamAuthException
- * @package Gabyfle
- */
-class SteamAuthException extends \Exception
-{
-
-}
-
-/**
  * Class SteamAuth
  * @package Gabyfle
  * @param $domainUrl string Your domain url
@@ -37,10 +28,6 @@ class SteamAuth
      * @var string User's steam id
      */
     private $steamId;
-    /**
-     * @var array User's steam data
-     */
-    private $userData;
 
     public function __construct(string $domainUrl, string $steamKey)
     {
@@ -56,16 +43,15 @@ class SteamAuth
     /**
      * __open()
      * Redirect the user to steam openid provider
-     * @return $this|bool
+     * @return $this
      * @throws \ErrorException
-     * @throws gSteamException
      */
     public function __open()
     {
         if(!$this->openid->__get('mode'))
             header('Location: ' . $this->openid->authUrl());
         elseif($this->openid->__get('mode') == 'cancel')
-            throw new gSteamException('User cancelled Steam connection.');
+            throw new \Exception('User cancelled Steam connection.');
         else
             return $this;
     }
@@ -73,19 +59,21 @@ class SteamAuth
     /**
      * __check()
      * Check if the user is connected
-     * @return $this
-     * @throws \ErrorException
-     * @throws gSteamException
+     * @return bool
      */
     public function __check()
     {
-        if($this->openid->validate())
+        if (!isset($_SESSION['gSteamUserData']))
         {
-            $this->steamId = $this->openid->__get('identity');
-            return $this;
-        }
-        else
-            throw new gSteamException('Can\'t validate user\'s login.');
+            if($this->openid->validate())
+            {
+                $this->steamId = $this->openid->__get('identity');
+                return true;
+            }
+            else
+                return false;
+        } else
+            return true;
     }
 
     /**
@@ -94,33 +82,35 @@ class SteamAuth
      * @param string $identity
      * @return string
      */
-    private function parseSteamId(string $identity)
+    private function parseSteamId()
     {
         $pattern = '/^https?:\/\/(?:www.)?steamcommunity\.com\/openid\/id\/([0-9]+)\/*$/';
-        preg_match($pattern, $identity, $m);
+        preg_match($pattern, $this->steamId, $m);
         $this->steamId = $m[1];
 
         return $m[1];
     }
 
     /**
-     * getDataFromSteam
+     * getDataFromSteam()
      * Call steam's API to get user's profile data (steam avatar, name & stuff)
+     * @return $this
      */
-    private function getDataFromSteam()
+    public function getDataFromSteam()
     {
-        $steamUrl = 'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=' . $this->steamKey . '&steamids=' . $this->parseSteamId($this->steamId);
+        $steamUrl = 'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=' . $this->steamKey . '&steamids=' . $this->parseSteamId();
         $json = file_get_contents($steamUrl);
         $contents = json_decode($json, true);
         foreach ($contents['response']['players'][0] as $key => $content)
-            $this->userData[$key] = $content;
+            $_SESSION['gSteamUserData'][$key] = $content;
+
+        return $this;
     }
 
     /**
      * getUserData
      * @param string $name
-     * @return array|mixed
-     * @throws gSteamException
+     * @return array|mixed|string
      * @see https://developer.valvesoftware.com/wiki/Steam_Web_API#GetPlayerSummaries_.28v0001.29
      *
      * List of available arguments (2019) (FROM VALVESOFTWARE WIKI):
@@ -147,27 +137,16 @@ class SteamAuth
      * locstatecode                 If set on the user's Steam Community profile, The user's state of residence
      * loccityid                    An internal code indicating the user's city of residence. A future update will provide this data in a more useful way.
      */
-    public function getUserData(string $name = '')
+    public static function getUserData(string $name = '')
     {
-        $this->getDataFromSteam();
-        if (empty($this->steamId))
-            throw new gSteamException('Trying to access to user data without being connected.');
-
-        if ($name != '' && isset($this->userData[$name]))
-            return $this->userData[$name];
-        elseif ($name == '')
-            return $this->userData;
+        if (!isset($_SESSION['gSteamUserData']))
+            return '[gSteam-Auth] Can\'t access to user\'s data since he isn\'t connected.';
+        if($name == '')
+            return $_SESSION['gSteamUserData'];
+        elseif (isset($_SESSION['gSteamUserData'][$name]))
+            return $_SESSION['gSteamUserData'][$name];
         else
-            throw new gSteamException('Can\'t find the userData field : ' . $name);
-    }
-
-    /**
-     * setSessionVar
-     * Sets $_SESSION['gsteamUserData'] variable with the user data collected
-     */
-    public function setSessionVar()
-    {
-        $_SESSION['gsteamUserData'] = $this->userData;
+            return '[gSteam-Auth] UserData not found.';
     }
 
     /**
@@ -176,6 +155,6 @@ class SteamAuth
      */
     public function unsetSessionVar()
     {
-        unset($_SESSION['gsteamUserData']);
+        unset($_SESSION['gSteamUserData']);
     }
 }

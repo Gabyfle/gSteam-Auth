@@ -1,7 +1,7 @@
 {
     "name": "gabyfle/gsteam-auth",
     "description": "An object-oriented Steam authentication PHP script",
-    "keywords": ["Gabyfle", "Steam", "authenticate", "object-oriented"],
+    "keywords": ["gabyfle", "steam", "authenticate", "object-oriented"],
     "license": "Apache-2.0",
     "authors": [
         {
@@ -14,16 +14,14 @@
             "type": "vcs",
             "url": "https://github.com/iignatov/LightOpenID"
         }
-    ],
+    ],      
     "require": {	
         "php": ">=5.4.0",
         "iignatov/lightopenid": "*"
     },
     "autoload": {
-        "psr-0": {
-            "Gabyfle": "src/"
+        "psr-4": {
+            "Gabyfle\\": "src/"
         }
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    }
 }
