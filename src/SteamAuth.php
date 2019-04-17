@@ -33,10 +33,10 @@ class SteamAuth
     {
         try {
             $this->openid = new \LightOpenID($domainUrl);
-            $this->openid->__set('identity', 'https://steamcommunity.com/openid');
+            $this->openid->identity = 'https://steamcommunity.com/openid';
             $this->steamKey = $steamKey;
         }catch (\ErrorException $e) {
-            throw new gSteamException('An error occurred why trying to initialize LightOpenID : ' . $e->getMessage());
+            throw new \Exception('An error occurred why trying to initialize LightOpenID : ' . $e->getMessage());
         }
     }
 
@@ -46,28 +46,28 @@ class SteamAuth
      * @return $this
      * @throws \ErrorException
      */
-    public function __open()
+    public function open()
     {
-        if(!$this->openid->__get('mode'))
+        if(!$this->openid->mode)
             header('Location: ' . $this->openid->authUrl());
-        elseif($this->openid->__get('mode') == 'cancel')
+        elseif($this->openid->mode == 'cancel')
             throw new \Exception('User cancelled Steam connection.');
         else
             return $this;
     }
 
     /**
-     * __check()
+     * check()
      * Check if the user is connected
      * @return bool
      */
-    public function __check()
+    public function check()
     {
         if (!isset($_SESSION['gSteamUserData']))
         {
             if($this->openid->validate())
             {
-                $this->steamId = $this->openid->__get('identity');
+                $this->steamId = $this->openid->identity;
                 return true;
             }
             else
@@ -150,10 +150,10 @@ class SteamAuth
     }
 
     /**
-     * unsetSessionVar
+     * disconnect
      * Unsets $_SESSION['gsteamUserData'] variable
      */
-    public function unsetSessionVar()
+    public function disconnect()
     {
         unset($_SESSION['gSteamUserData']);
     }

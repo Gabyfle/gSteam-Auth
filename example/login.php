@@ -5,14 +5,14 @@ require __DIR__ . "/vendor/autoload.php";
 
 $config = [
     'domainName' => 'localhost',
-    'steamKey' => 'XXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+    'steamKey' => 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
 ];
 
 $steam = new Gabyfle\SteamAuth($config['domainName'], $config['steamKey']);
 /* Opening a connection with Steam services and checking if user is connected*/
 try{
-    $steam->__open();
-    if ($steam->__check()) {
+    $steam->open(); // or $isConnected = $steam->open()->check();
+    if ($steam->check() /* or directly $isConnected */) {
         $steam->getDataFromSteam();
         header('Location: index.php');
     } else

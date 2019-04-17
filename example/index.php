@@ -7,7 +7,7 @@ require __DIR__ . "/vendor/autoload.php";
  */
 $config = [
     'domainName' => 'localhost',
-    'steamKey' => 'XXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+    'steamKey' => 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
 ];
 
 $steam = new Gabyfle\SteamAuth($config['domainName'], $config['steamKey']);
@@ -21,13 +21,15 @@ $steam = new Gabyfle\SteamAuth($config['domainName'], $config['steamKey']);
     </head>
     <body>
     <?php
-    if ($steam->__check()) {
+    if ($steam->check()) {
         ?>
         <ul>
             <li>Pseudonyme : <?= $steam->getUserData('personaname'); ?></li>
             <li>SteamID : <?= $steam->getUserData('steamid'); ?></li>
-            <li>Avatar : <img src="<?= $steam->getUserData('avatarfull'); ?>" alt="your avatar" width="64" height="64"/></li>
-            <li>Profile link : <a href="<?= $steam->getUserData('profileurl'); ?>" target="_blank"><?= $steam->getUserData('profileurl'); ?></a></li>
+            <li>Avatar : <img src="<?= $steam->getUserData('avatarfull'); ?>" alt="your avatar" width="64"
+                              height="64"/></li>
+            <li>Profile link : <a href="<?= $steam->getUserData('profileurl'); ?>"
+                                  target="_blank"><?= $steam->getUserData('profileurl'); ?></a></li>
             <li>Realname : <?= $steam->getUserData('realname'); ?> </li>
         </ul>
         <?php
