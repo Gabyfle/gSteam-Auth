@@ -153,8 +153,9 @@ class SteamAuth
      * disconnect
      * Unsets $_SESSION['gsteamUserData'] variable
      */
-    public function disconnect()
+    public static function disconnect()
     {
-        unset($_SESSION['gSteamUserData']);
+        if (isset($_SESSION['gSteamUserData']))
+            unset($_SESSION['gSteamUserData']);
     }
 }
