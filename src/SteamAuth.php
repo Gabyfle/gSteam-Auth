@@ -29,6 +29,12 @@ class SteamAuth
      */
     private $steamId;
 
+    /**
+     * SteamAuth constructor.
+     * @param string $domainUrl
+     * @param string $steamKey
+     * @throws \Exception
+     */
     public function __construct(string $domainUrl, string $steamKey)
     {
         try {
