@@ -14,7 +14,7 @@ Command line :
 composer require gabyfle/gsteam-auth
 ```
 ### Installing without `composer`
-- Download the lastest release : here
+- Download the lastest release : [here](https://github.com/Gabyfle/gSteam-Auth/releases)
 - Download the **LightOpenID** library : [iignatov/lightopenid](https://github.com/iignatov/LightOpenID)
 - Include these two libraries to your project
 - Start using the library
